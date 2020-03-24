@@ -1,0 +1,493 @@
+@import "modern-normalize.css";
+@import "webfonts.css";
+@import "spinkit.css";
+
+$body-font: 'Questrial', sans-serif;
+$header-font: 'aganbold';
+$header-font-alt: 'aganextra_bold';
+$text-color: #292929;
+
+$blue1: #51A4FB;
+$blue2: #3196FF;
+$gray1: #E0E0E0;
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background-color: #fff;
+    color: $text-color;
+    font-size: 1.8rem;
+}
+
+.sk-circle-fade {
+    margin: auto;
+    .sk-circle-fade-dot:before {
+        background-color: $blue2;
+    }
+}
+
+.wrapper {
+    padding: 25px;
+
+    header.main {
+        position: relative;
+        margin-bottom: 40px;
+
+        h1 {
+            margin: 0;
+            display: inline-block;
+            a {
+                display: block;
+                img {
+                    width: 224px;
+                    height: auto;
+                }
+            }            
+        }
+
+        nav {
+            display: none;
+            font-size: 1.6rem;
+            
+            ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+
+                li {
+                    list-style: none;
+
+                    a {
+                        text-decoration: none;
+                        color: $blue1;
+                    }
+                }
+            }
+        }
+    }
+
+    footer.main {
+        margin-bottom: 25px;
+        margin-top: 25px;
+        font-size: 1.4rem;
+
+        .copyright {
+            margin-bottom: 4px;
+        }
+
+        .back_to_top {
+            color: $blue1;
+            cursor: pointer;
+        }
+    }
+}
+
+a.btn, input[type=submit] {
+    border-radius: 40px;
+    background-color: $blue1;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    outline: none;
+    border: 0;
+
+    &:hover {
+        background-color: $blue2;
+    }
+}
+
+.page_home {
+    position: relative;
+
+    .headline {
+        text-align: center;
+        width: 90%;
+        margin: auto;
+        margin-bottom: 10vh;
+
+        h2 {
+            font-size: 3.2rem;
+            line-height: 4.0rem;
+            font-family: $header-font;
+            font-weight: normal;
+        }
+
+        p {
+            line-height: 2.7rem;
+        }
+    }
+
+    .find_controls {
+        width: 245px;
+        margin: auto;
+        text-align: center;
+
+        a.btn {
+            margin-bottom: 15px;
+        }
+
+        a.btn.hide {
+            display: none;
+        }
+
+        form.loc_input {
+            border-radius: 40px;
+            border: 2px solid $blue1;
+            display: flex;
+            padding: 10px;
+            justify-content: space-between;
+            color: $text-color;
+            margin-bottom: 15px;
+
+            input[type=text] {
+                width: 75%;
+                font-size: 2.0rem;
+                border: 0;
+                outline: none;
+                padding-left: 15px;
+            }
+
+            button {
+                width: 20%;
+                background: transparent;
+                outline: none;
+                border: 0;
+                color: $blue2;
+                cursor: pointer;
+            }
+        }
+
+        form.loc_input.hide {
+            display: none;
+        }
+
+        small {
+            font-size: 1.4rem;
+        }
+    }
+}
+
+.page_submit {
+    .headline {
+        text-align: center;
+        width: 90%;
+        margin: auto;
+
+
+        h2 {
+            font-size: 3.2rem;
+            line-height: 4.0rem;
+            font-family: $header-font;
+            font-weight: normal;
+        }
+
+        p {
+            line-height: 2.7rem;
+        }
+    }
+}
+
+.page_listing {
+    .table_header {        
+        grid-template-columns: 25% 25% 25% 25%;
+        font-family: $header-font;
+        color: $blue1;
+        text-transform: uppercase;
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+        display: none;
+    }
+
+    .map {
+        display: none;
+    }
+
+    .table_listing {
+        .empty {
+            text-align: center;
+            font-size: 2.1rem;
+        }
+        .entry {
+            margin-bottom: 30px;
+            border-bottom: 1px solid $gray1;
+            padding-bottom: 25px;
+            .name {
+                font-size: 1.8rem;                
+                margin-bottom: 4px;
+                font-family: $header-font-alt;
+            }
+
+            .details {                
+                padding-top: 20px;
+                
+            }
+
+            &:last-of-type {
+                border-bottom: 0;
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+form {
+    position: relative;
+    .loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255,255,255,0.8);
+        z-index: 10;
+
+        .sk-circle-fade {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 25vh;
+        }
+    }
+
+    .complete {
+        padding-top: 45px;
+        text-align: center;
+        padding-bottom: 45px;
+    }
+
+    .formrow {
+        margin-bottom: 20px;
+
+        .field {
+            margin-bottom: 20px;
+
+            label {
+                text-transform: uppercase;
+                font-family: $header-font;
+                font-size: 1.4rem;
+                letter-spacing: 1.5px;
+                margin-bottom: 5px;
+                display: block;                
+            }
+
+            input[type=text] {
+                border-radius: 20px;
+                border: 2px solid $text-color;                
+                padding: 10px;
+                width: 100%;
+            }
+
+            select {
+                width: 100%;
+                position: relative;
+                z-index: 1;
+            }
+
+            textarea {
+                border-radius: 20px;
+                border: 2px solid $text-color; 
+                width: 100%;
+                min-height: 200px;
+                padding: 10px;
+            }
+        }
+    }
+
+    .errors {
+        background-color: rgb(255, 142, 142);
+        border: 1px solid rgb(154, 0, 0);
+        color: rgb(154, 0, 0);
+        margin-bottom: 25px;
+        padding: 15px;
+    }
+
+    input[type=submit] {
+        width: 100%;
+    }
+}
+
+
+@media (min-width: 48em) {
+    .wrapper {
+        padding: 0;
+
+        .inner {
+            position: relative;
+            padding-left: 25px;
+            padding-right: 25px;
+            height: 100%;
+        }
+
+        header.main {
+            height: 117px;
+            margin-bottom: 0;
+
+            .inner {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            h1 {
+                height: auto;
+                line-height: 117px;
+
+                a {                    
+                    img {
+                        width: 245px;
+                    }
+                }
+            }
+
+            nav {                
+                display: block;                
+                right: 0;
+                line-height: 117px;
+                ul {
+                    position: relative;
+                    top: -5px;
+                    li {
+                        display: inline-block;
+                        margin-left: 20px;
+                    }
+                }
+            }
+        }
+
+        footer.main {
+            .inner {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+
+    .page_home {
+        position: relative;
+        height: 80.5vh;
+    
+        .headline {
+            width: 582px;
+            padding-top: 100px;
+            margin: auto;
+
+            h2 {
+                font-size: 3.8rem;
+                line-height: 1.4em;
+                margin-bottom: 60px;
+            }
+
+            p {
+                font-size: 2.2rem;
+                line-height: 1.7em;
+            }
+        }
+
+        .find_controls {
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            right: 0;
+        }
+    }
+
+    .page_listing {
+        .table_header {       
+            display: grid;
+            padding-left: 25px;
+            padding-right: 25px;
+            margin-bottom: 30px;
+        }
+
+        .map {
+            display: block;
+            width: 100%;
+            background-color: lightgray;
+            height: 475px;
+            margin-bottom: 40px;
+        }
+
+        .table_listing {
+            padding-left: 25px;
+            padding-right: 25px;
+
+            .entry {
+                display: grid;
+                grid-template-columns: 25% 25% 25% 25%;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+
+                .name, .phone, .hours, .details {
+                    font-size: 1.6rem;
+                }
+
+                .details {
+                    padding: 0;
+                    line-height: 1.6em;
+                }
+            }
+        }
+    }
+
+    .page_submit {
+        .headline {
+            width: 582px;
+            padding-top: 50px;            
+            margin: auto;
+
+            margin-bottom: 50px;
+
+            h2 {
+                font-size: 3.8rem;
+                line-height: 1.4em;
+                margin-bottom: 60px;
+            }
+
+            p {
+                font-size: 2.2rem;
+                line-height: 1.7em;
+            }
+        }
+
+        #react_form {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            margin-top: 45px;
+            margin-bottom: 90px;
+        }
+    }
+
+
+    form {
+        .formrow {
+            &.col-2 {
+                display: grid;
+                grid-template-columns: 48% 48%;
+                justify-content: space-between;
+            }
+
+            &.col-3 {
+                display: grid;
+                grid-template-columns: 32% 32% 32%;
+                justify-content: space-between;
+            }
+
+            .field {
+                margin-bottom: 0;
+
+                select {
+                    position: relative;
+                    top: 10px;
+                }
+            }
+        }
+    }
+}
+
+
