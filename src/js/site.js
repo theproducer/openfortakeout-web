@@ -4,13 +4,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const findloc_btn = document.querySelector("#findloc_btn");
     const zipcode_form = document.querySelector("#inputloc_form");
+    const manual_btn = document.querySelector("#enable_zipcodeform");
     const backtotop_btn = document.querySelector(".back_to_top");
+    const mobile_btn = document.querySelector("#mobilemenubtn");
 
     if (findloc_btn) {
         findloc_btn.addEventListener("click", function() {
-            geolocate();
+            if (!findloc_btn.classList.contains("loading")) {
+                findloc_btn.classList.add("loading");
+                geolocate();
+            }            
         });
     }   
+
+    if (manual_btn) {
+        manual_btn.addEventListener("click", function() {
+            geolocate_fail();
+        });
+    }
 
     if (zipcode_form) {
         document.querySelector("#inputloc_form").addEventListener("submit", function(e) {    
@@ -30,7 +41,19 @@ document.addEventListener("DOMContentLoaded", function() {
             document.documentElement.scrollTop = 0;
         });
     }
+
+    if (mobile_btn) {
+        mobile_btn.addEventListener("click", function() {
+            document.querySelector("header.main nav").classList.toggle("open");
+        });
+    }
 });
+
+window.onresize = function() {
+    if (window.innerWidth >= 768 ) {
+        document.querySelector("header.main nav").classList.remove("open");
+    }
+}
 
 function geolocate() {
     if (!navigator.geolocation) {
@@ -49,7 +72,6 @@ function geolocate_success(position) {
 }
 
 function geolocate_fail() {
-    console.warn("failed to geolocate");
     document.querySelector("#inputloc_form").classList.remove("hide");
     document.querySelector("#findloc_btn").classList.add("hide");
 }

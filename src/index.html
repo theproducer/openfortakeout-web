@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Open for Takeout</title>
-    <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet">
-    <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicons/favicon-16x16.png">
-    <link rel="manifest" href="img/favicons/site.webmanifest">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicons/favicon-16x16.png" />
+    <link rel="manifest" href="img/favicons/site.webmanifest" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63664179-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-161719050-1');
+    </script>
 </head>
 <body>
     <div class="wrapper">
@@ -17,10 +28,15 @@
                 <h1><a href="/"><img src="img/logo_notagline.svg" alt="Open for Takeout" /></a></h1>
                 <nav>
                     <ul>
-                        <li><a href="#">About</a></li>
+                        <li><a href="/about.html">About</a></li>
                         <li><a href="mailto:info@wereopenfortakeout.com">Inquire</a></li>
                     </ul>
                 </nav>
+                <a id="mobilemenubtn" class="mobilemenubtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="20" viewBox="0 0 24 20">
+                        <path id="icons8-menu" d="M0,2V4H24V2Zm0,9v2H24V11Zm0,9v2H24V20Z" transform="translate(0 -2)" fill="#292929"/>
+                    </svg>
+                </a>
             </div>
 
         </header>
@@ -36,7 +52,8 @@
                     <input type="text" name="zipcode" placeholder="Zipcode" />
                     <button type="submit">Go</button>
                 </form>
-                <small>Own a restaurant?  <a href="/submit-business.html">Add your<br/>business to our registy!</a></small>
+                <small><a id="enable_zipcodeform">Manually enter zipcode instead</a></small><br/><br/>
+                <small>Own a business?  <a href="/submit-business.html">Add your<br/>business to our registy!</a></small>
             </div>
         </div>
         

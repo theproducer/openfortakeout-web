@@ -75,5 +75,10 @@ module.exports = {
             filename: "submit-business.html",
             template: 'src/submit-business.html'
         }),
+        new htmlwebpackplugin({
+            title: 'Open for Takeout - About',
+            filename: "about.html",
+            template: 'src/about.html'
+        }),
     ]
 };

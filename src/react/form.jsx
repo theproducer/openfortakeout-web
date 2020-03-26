@@ -7,22 +7,29 @@ import validate from "validate.js";
 import LoadingSpinner from "./loading";
 
 const ApplicationForm = {
-    name: "Sample Restaurant",
-    email: "jdoe@example.com",
-    phone: "1234567890",
-    address: "123 Main Street",
-    address_2: "UNIT A",
-    city: "Harrisburg",
-    state: "SD",
-    zipcode: "57032",
-    url: "http://joeypender.com",
+    name: "",
+    type: "",
+    email: "",
+    phone: "",
+    address: "",
+    address_2: "",
+    city: "",
+    state: "",
+    zipcode: "",
+    url: "",
     donate_url: "",
-    hours: "9am - 10pm",
-    details: "Testing, testing, 1, 2, 3",
+    hours: "",
+    details: "",
     giftcard: false
 };
 
 const apiurl = process.env.API_URL;
+const form_types = [
+    "Restaurant",
+    "Groceries",
+    "Electronics"
+];
+
 const state_hash = {
     AL: "Alabama",
     AK: "Alaska",
@@ -87,6 +94,7 @@ const state_hash = {
 
 const formConstraints = {
     name: { presence: true },
+    type: { presence: true },
     phone: { presence: true, length: { maximum: 14 } },
     email: { presence: true, email: true },
     url: { url: true },
@@ -208,6 +216,25 @@ class SubmitForm extends React.Component {
                                         value={this.state.form.name}
                                         onChange={this.onFormFieldChange}
                                     />
+                                </div>
+                            </div>
+                            <div className="formrow">
+                                <div className="field">
+                                    <label>Business Type *</label>
+                                    <select
+                                        name="type"
+                                        value={this.state.form.type}
+                                        onChange={this.onFormFieldChange}
+                                    >
+                                        <option>Select a Type</option>
+                                        {form_types.map((type, index) => {
+                                            return (
+                                                <option key={index} value={type}>
+                                                    {type}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
                                 </div>
                             </div>
                             <div className="formrow col-2">
