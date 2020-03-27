@@ -12,7 +12,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: './[name].js'
+        filename: './[name].[hash].js'
     },
     resolve: {
         extensions: ['.jsx', '.js', '.json']
@@ -63,7 +63,7 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: './website.css',
-            chunkFileName: '[id].css'
+            chunkFileName: '[id].[hash].css'
         }),
         new htmlwebpackplugin({
             title: 'Open for Takeout - Home',

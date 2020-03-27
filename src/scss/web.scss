@@ -532,15 +532,14 @@ form {
         .map {            
             display: block;
             width: 100%;
-            background-color: lightgray;
             height: 475px;
             margin-bottom: 40px;
             position: relative;
 
             .marker {
                 background-color: $blue2;
-                width: 5px;
-                height: 5px;
+                width: 12px;
+                height: 12px;
                 border-radius: 50%;
                 cursor: pointer;
             }
