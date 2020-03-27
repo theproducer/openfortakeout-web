@@ -1,15 +1,15 @@
 @font-face {
     font-family: 'aganbold';
-    src: url('../fonts/agane_65_bold-webfont.woff2') format('woff2'),
-         url('../fonts/agane_65_bold-webfont.woff') format('woff');
+    src: url('../static/fonts/agane_65_bold-webfont.woff2') format('woff2'),
+         url('../static/fonts/agane_65_bold-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'aganextra_bold';
-    src: url('../fonts/agane_75_extra_bold-webfont.woff2') format('woff2'),
-         url('../fonts/agane_75_extra_bold-webfont.woff') format('woff');
+    src: url('../static/fonts/agane_75_extra_bold-webfont.woff2') format('woff2'),
+         url('../static/fonts/agane_75_extra_bold-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }

@@ -151,7 +151,7 @@ a {
         margin-top: 25px;
         font-size: 1.4rem;       
 
-        .inner {
+        .inner {            
             padding-left: 25px;
             padding-right: 25px;
         }
@@ -161,8 +161,19 @@ a {
         }
 
         .back_to_top {
+            position: fixed;
+            bottom: 20px;
+            right: 10px;
             color: $blue1;
             cursor: pointer;
+            padding: 10px;
+            padding-left: 25px;
+            padding-right: 25px;
+            border-radius: 20px;
+            background-color: $blue1;
+            color: #fff;
+            z-index: 10000;
+
         }
     }
 }
@@ -189,6 +200,7 @@ a.btn, input[type=submit] {
     position: relative;
     padding-left: 25px;
     padding-right: 25px;
+    margin-bottom: 35px;
 
     .headline {
         text-align: center;
@@ -332,8 +344,8 @@ a.btn, input[type=submit] {
         top: 60px;
         height: 50px;
         width: 100%;
-        border-top: 1px solid $gray2;
-        border-bottom: 1px solid $gray2;
+        border-top: 1px solid $gray1;
+        border-bottom: 1px solid $gray1;
 
         .search {
             input[type=search] {
@@ -361,98 +373,114 @@ a.btn, input[type=submit] {
             align-items: center;
             height: 100%;
         }
+    }
 
-        .entry {
-            color: $text-color2;
-            border-bottom: 1px solid $gray1;
-            padding-bottom: 10px;
-            margin-bottom: 25px;
+    .entry {
+        color: $text-color2;
+        border-bottom: 1px solid $gray1;
+        padding-bottom: 10px;
+        margin-bottom: 25px;
 
-            header {
-                display: grid;
-                justify-content: space-between;
-                grid-template-columns: 75% 20%;
-                margin-bottom: 5px;
+        header {
+            display: grid;
+            justify-content: space-between;
+            grid-template-columns: 75% 20%;
+            margin-bottom: 5px;
 
-                h1 {
-                    font-family: $header-font;
-                    font-size: 2.0rem;
-                    margin: 0;
-                    font-weight: normal;
-                }
-
-                .distance {
-                    font-size: 1.4rem;
-                    color: $gray2;
-                    text-align: right;
-                }
+            h1 {
+                font-family: $header-font;
+                font-size: 2.0rem;
+                margin: 0;
+                font-weight: normal;
             }
 
-            .business_type {
+            .distance {
                 font-size: 1.4rem;
                 color: $gray2;
-                margin-bottom: 10px;
+                text-align: right;
+            }
+        }
+
+        .business_type {
+            font-size: 1.4rem;
+            color: $gray2;
+            margin-bottom: 10px;
+        }
+
+        .subtypes {
+            margin-bottom: 15px;
+
+            span {
+                display: inline-block;
+                height: 28px;
+                line-height: 26px;
+                background-color: $blue1;
+                border-radius: 14px;
+
+                font-size: 1.3rem;
+                color: $text-color;
+                text-align: center;
+                padding-left: 15px;
+                padding-right: 15px;
+                margin-right: 10px;
+                cursor: default;
+
+            }
+        }
+
+        .address, .hours, .contact {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        .contact {
+            display: grid;
+            justify-content: space-between;
+            grid-template-columns: 45% 45%;
+
+            a {
+                text-decoration: none;
+                color: $text-color2;
             }
 
-            .subtypes {
-                margin-bottom: 15px;
-
-                span {
-                    display: inline-block;
-                    height: 28px;
-                    line-height: 26px;
-                    background-color: $blue1;
-                    border-radius: 14px;
-
-                    font-size: 1.3rem;
-                    color: $text-color;
-                    text-align: center;
-                    padding-left: 15px;
-                    padding-right: 15px;
-                    margin-right: 10px;
-                    cursor: default;
-
-                }
+            .web .icon, .phone .icon {
+                display: inline-block;
+                width: 15px;
+                height: 15px;
+                margin-right: 10px;
             }
 
-            .address, .hours, .contact {
-                font-size: 1.6rem;
-                margin-bottom: 15px;
+            .web .icon {
+                background-image: url("../static/img/external-link-alt-solid.svg");
             }
 
-            .contact {
-                display: grid;
-                justify-content: space-between;
-                grid-template-columns: 45% 45%;
-
-                a {
-                    text-decoration: none;
-                    color: $text-color2;
-                }
-
-                .web .icon, .phone .icon {
-                    display: inline-block;
-                    width: 15px;
-                    height: 15px;
-                    margin-right: 10px;
-                }
-
-                .web .icon {
-                    background-image: url("../img/external-link-alt-solid.svg");
-                }
-
-                .phone .icon {
-                    background-image: url("../img/phone-alt-solid.svg");
-                }
+            .phone .icon {
+                background-image: url("../static/img/phone-alt-solid.svg");
             }
+        }
 
-            .details {
-                font-size: 1.4rem;
-                font-style: italic;
-                max-height: 60px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                margin-bottom: 25px;
+        .details {
+            font-size: 1.4rem;
+            line-height: 1.3em;
+            font-style: italic;
+            max-height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 25px;
+        }
+    }
+
+    .map {
+        .entry {
+            padding: 9px;
+            border-bottom: 0;
+
+            header {
+                display: block;
+
+                h1 {
+                    width: 100%;
+                }
             }
         }
     }
@@ -600,6 +628,10 @@ form {
             .inner {
                 display: flex;
                 justify-content: space-between;
+
+                .back_to_top {
+                    bottom: 35px;
+                }
             }
         }
     }

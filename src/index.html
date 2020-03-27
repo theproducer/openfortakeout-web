@@ -6,17 +6,17 @@
     <title>Open for Takeout</title>
     <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
     <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet" />
-    <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicons/favicon-16x16.png" />
-    <link rel="manifest" href="img/favicons/site.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="static/img/favicons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="static/img/favicons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="static/img/favicons/favicon-16x16.png" />
+    <link rel="manifest" href="static/img/favicons/site.webmanifest" />
 
     <meta property="og:title" content="We're Open for Takeout">
     <meta property="og:site_name" content="We're Open for Takeout">
     <meta property="og:url" content="https://www.wereopenfortakeout.com">
-    <meta property="og:description" content="Support your local restaurants by ordering takeout online!">
+    <meta property="og:description" content="Support your local food service restaurants and shops by ordering takeout or curb side!">
     <meta property="og:type" content="article">
-    <meta property="og:image" content="">
+    <meta property="og:image" content="https://www.wereopenfortakeout.com/static/img/og_image.jpg">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63664179-1"></script>
@@ -32,10 +32,11 @@
     <div class="wrapper">
         <header class="main">
             <div class="inner">
-                <h1><a href="/"><img src="img/logo_notagline.svg" alt="Open for Takeout" /></a></h1>
+                <h1><a href="/"><img src="static/img/logo_notagline.svg" alt="Open for Takeout" /></a></h1>
                 <nav>
                     <ul>
                         <li><a href="/about.html">About</a></li>
+                        <li><a href="/submit-business.html">Submit</a></li>
                         <li><a href="mailto:info@wereopenfortakeout.com">Inquire</a></li>
                     </ul>
                 </nav>
@@ -49,14 +50,14 @@
         </header>
         <div class="page_home">
             <div class="headline">
-                <h2>Support your local restaurants by ordering takeout online!</h2>
+                <h2>Support your local food service restaurants and shops by ordering takeout or curb side!</h2>
                 <p>Many of your favorite restaurants, bars, cafe’s and eateries are still open for takeout and delivery options. Help support your local small businesses and the thousands of employees that depend on loyal patrons like yourself.</p>
             </div>
 
             <div class="find_controls">
                 <a id="findloc_btn" class="btn">Find Near me</a>
                 <form id="inputloc_form" class="loc_input hide">
-                    <input type="text" name="zipcode" placeholder="Zipcode" value="49684" />
+                    <input type="text" name="zipcode" placeholder="Zipcode" />
                     <button type="submit">Go</button>
                 </form>
                 <small><a id="enable_zipcodeform">Manually enter zipcode instead</a></small><br/><br/>

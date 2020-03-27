@@ -88,7 +88,7 @@ class Listing extends React.Component {
         }
 
         const filtered = this.allentries.filter((entry) => {
-            return entry.name.includes(searchterm);
+            return entry.name.toLowerCase().includes(searchterm.toLowerCase());
         });
 
         return filtered;

@@ -87,22 +87,25 @@ export default class ReactMap extends React.Component {
             const offersGiftcard = entry.giftcard ? "Yes" : "No";
             const needsDonations = entry.donate_url !== "" ? "<a target='_blank' href='" + entry.donate_url + "'>Donate Here</a>" : "No";
 
-            let msg = "";
+            let msg = "<div class='entry'>";
+            msg += "<header>";
             msg += "<h1>" + entry.name + "</h1>";
-            msg += "<div class='type'>" + entry.type + "</div>";
+            msg += "</header>";
+            msg += "<div class='business_type'>" + entry.type + "</div>";
             msg += "<div class='address'>";
             msg += entry.address + " " + entry.address_2 + "<br/>";
             msg += entry.city + ", " + entry.state + " " + entry.zipcode;            
             msg += "</div>";
             msg += "<div class='hours'><strong>Hours: </strong>" + entry.hours + "</div>";
             msg += "<div class='contact'>";
+            msg += "<div class='phone'><span class='icon'></span><a href='tel:" + entry.phone + "'>" + entry.phone + "</a></div>";
             if (entry.url !== "") {
-                msg += "<strong>Website: </strong><a target='_blank' href='" + entry.url + "'>" + entry.url + "</a><br/>";
-            }            
-            msg += "<strong>Phone: </strong>" + entry.phone + "<br/>";
+                msg += "<div class='web'><span class='icon'></span><a target='_blank' href='" + entry.url + "'>Visit Website</a></div>";
+            }                        
             msg += "</div>";
            
             msg += "<div class='details'>" + entry.details + "</div>";
+            msg += "</div>";
 
             const marker = new mapboxgl.Marker(markerElement);
             marker.setLngLat([entry.latlng.lng, entry.latlng.lat]);
