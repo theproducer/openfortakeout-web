@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import 'babel-polyfill';
 
 import LoadingSpinner from "./loading";
+import BusinessEntry from "./entry";
 import ReactMap from "./map";
 
 const apiurl = process.env.API_URL;
@@ -11,8 +12,13 @@ class Listing extends React.Component {
     constructor(props) {
         super(props);
 
+        this.allentries = [];
+        this.searchTimeout = null;
+
+
         this.state = {
             loading: false,
+            searchterm: "",
             entries: [],
             error: null
         };
@@ -38,7 +44,9 @@ class Listing extends React.Component {
             }
         }).then(async (res) => {
             if (res.ok) {
-                const entries = await res.json();
+                this.allentries = await res.json();
+
+                const entries = this.filterEntries();
 
                 this.setState({
                     loading: false,
@@ -56,94 +64,85 @@ class Listing extends React.Component {
         });
     }
 
+    onSearchFieldChange = (e) => {
+        this.setState({
+            searchterm: e.target.value,
+        });
+
+        if (this.searchTimeout !== null) {
+            clearTimeout(this.searchTimeout);
+        }
+
+        this.searchTimeout = setTimeout(() => {
+            this.searchTimeout = null;
+            this.setState({
+                entries: this.filterEntries(),
+            });
+        }, 800);
+    }
+
+    filterEntries = () => {        
+        const searchterm = this.state.searchterm;
+        if (searchterm.length < 3) {
+            return this.allentries;
+        }
+
+        const filtered = this.allentries.filter((entry) => {
+            return entry.name.includes(searchterm);
+        });
+
+        return filtered;
+    }
+
+    onEntryHover = (entry) => {
+        document.getElementById("marker-" + entry.id).classList.add("highlighted");
+    }
+
+    onEntryOut = (entry) => {
+        document.getElementById("marker-" + entry.id).classList.remove("highlighted");
+    }
+
     render() {
         return (
             <div>
-                <div className="map"><ReactMap entries={this.state.entries} /></div>
-                <header className="table_header">
-                    <div className="name_header">Name</div>
-                    <div className="location_header">Location</div>
-                    <div className="hours_header">Hours</div>
-                    <div className="type_header">Type</div>
-                </header>
-                {this.state.error !== null ? (
-                    <div className="errors" dangerouslySetInnerHTML={{__html: this.state.error}}></div>
-                ) : null}
-                <div className="table_listing">
-                    {this.state.loading ? <div className="loading"><LoadingSpinner /></div> : null}
-                    {this.state.entries.map((entry, index) => {
-                        return (
-                            <ListingEntry 
-                                entry={entry} 
-                                key={index} 
-                                onClick={(e) => {
-                                    const currenttarget = e.currentTarget;
-                                    const target = e.target;
-                                    if (target.classList.contains("col")) {
-                                        currenttarget.classList.toggle("active");
-                                    }                                    
-                                }}
-                            />
-                        );
-                    })}
-                    {this.state.entries.length === 0 ?
-                        <div className="empty">
-                            No entries found in this area.
-                        </div>
-                        : null
-                    }
+                <div className="filters">
+                    <div className="search">
+                        <input 
+                            type="search" 
+                            placeholder="search..." 
+                            value={this.state.searchterm}
+                            onChange={this.onSearchFieldChange}
+                        />
+                    </div>
                 </div>
+                {this.state.loading ? (
+                    <div className="loading">
+                        <LoadingSpinner />
+                    </div>
+                ) : null}
+                <div className="results">
+                    <div className="listing">
+                        {this.state.entries.length === 0 ?
+                            <div className="empty">No businesses found in this area.</div>
+                        : null }
+                        {this.state.entries.map((entry) => {
+                            return (
+                            <BusinessEntry
+                                key={entry.id} 
+                                entry={entry} 
+                                onHover={this.onEntryHover}   
+                                onOut={this.onEntryOut}                            
+                            />
+                            );
+                        })}
+                    </div>
+                    <div className="map">
+                        <ReactMap entries={this.state.entries} />
+                    </div>
+                </div>                
             </div>
         );
     }
-}
-
-function ListingEntry(props) {
-    return (
-        <div className="entry" onClick={props.onClick}>
-            <div className="col name">{props.entry.name}</div>
-            <div className="col phone">{props.entry.city}, {props.entry.state}</div>
-            <div className="col hours">{props.entry.hours}</div>
-            <div className="col type">{props.entry.type}</div>
-            <div className="fulldetails">
-                <div className="lcol">
-                    <h1>{props.entry.name}</h1>
-                    <div className="type">{props.entry.type}</div>
-                    <div className="address">
-                        {props.entry.address + " " + props.entry.address_2}<br />
-                        {props.entry.city + ", " + props.entry.state + " " + props.entry.zipcode}
-                    </div>
-                    <div className="hours"><strong>Hours: </strong>{props.entry.hours}</div>
-                    <div className="contact">
-                        {props.entry.url !== "" ?
-                            <><strong>Website: </strong><a target="_blank" href={props.entry.url}>{props.entry.url}</a><br /></>
-                            : null}
-                        <strong>Phone: </strong><a target="_blank" href={"tel:" + props.entry.phone}>{props.entry.phone}</a>
-                    </div>
-                    <table cellSpacing={0} border={1}>
-                        <thead>
-                            <tr>
-                                <th colSpan={2}>Features</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Online Giftcard</strong></td>
-                                <td>{props.entry.giftcard ? "Yes" : "No"}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Needs Donations</strong></td>
-                                <td>{props.entry.donate_url ? <a target="_blank" href={props.entry.donate_url}>Donate Here</a> : "No"}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className="rcol">
-                    <div className="details">{props.entry.details}</div>
-                </div>
-            </div>
-        </div>
-    );
 }
 
 const mount_element = document.getElementById("react_listing");

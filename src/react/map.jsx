@@ -1,5 +1,6 @@
 import React from "react";
 import mapboxgl from 'mapbox-gl';
+import lodash from 'lodash';
 
 mapboxgl.accessToken = "pk.eyJ1IjoidGhlcHJvZHVjZXIiLCJhIjoiczBvODhOMCJ9.CtNj7d3gId88Sc4M4fi_MQ";
 
@@ -7,7 +8,8 @@ export default class ReactMap extends React.Component {
     constructor(props) {
         super(props);
 
-        this.map = null;
+        this.map = null;   
+        this.markers = [];     
 
         this.state = {
             lat: 38.0000,
@@ -24,6 +26,9 @@ export default class ReactMap extends React.Component {
             zoom: this.state.zoom
         });
 
+        this.map.scrollZoom.disable();
+        this.map.addControl(new mapboxgl.NavigationControl());
+
         this.map.resize();       
 
         this.map.on("move", () => {
@@ -33,23 +38,51 @@ export default class ReactMap extends React.Component {
                 zoom: this.map.getZoom().toFixed(2)
             })
         });
+
+        window.onresize = () => {
+            const viewportHeight = window.innerHeight;
+            this.mapContainer.parentElement.style.height = (viewportHeight - 120) + "px";
+        }
+
+        window.onresize();
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
+    componentDidUpdate() {
+        console.log("perform an update on the map");
         if (this.map) {
             this.map.resize();
         }
 
-        this.processMapEntries(nextProps.entries);
+        this.processMapEntries(this.props.entries);
+    }
+
+    shouldComponentUpdate(nextProps) {
+        if (lodash.isEqual(this.props.entries, nextProps.entries)) {
+            return false;
+        }
+
+        return true;
     }
 
     processMapEntries(entries) {
+        // clear any existing markers
+        this.markers.forEach((marker) => {
+            marker.remove();
+        });
+
+        this.markers = [];
+
         let bounds = new mapboxgl.LngLatBounds();
 
         entries.forEach((entry) => {
             const markerElement = document.createElement("div");
+            // const markerLabel = document.createElement("label");
+            // markerLabel.innerText = entry.name;
+
             markerElement.className = "marker";
+            markerElement.id = "marker-" + entry.id;
+            // markerElement.appendChild(markerLabel);
+            
 
             const offersGiftcard = entry.giftcard ? "Yes" : "No";
             const needsDonations = entry.donate_url !== "" ? "<a target='_blank' href='" + entry.donate_url + "'>Donate Here</a>" : "No";
@@ -68,10 +101,7 @@ export default class ReactMap extends React.Component {
             }            
             msg += "<strong>Phone: </strong>" + entry.phone + "<br/>";
             msg += "</div>";
-            msg += "<table cellspacing='0' border='1'><thead><tr><th>Features</th><th>&nbsp;</th></tr></thead><tbody>";
-            msg += "<tr><td><strong>Online Giftcard</strong></td><td>" + offersGiftcard + "</td></tr>";
-            msg += "<tr><td><strong>Needs Donations</strong></td><td>" + needsDonations + "</td></tr>";
-            msg += "</tbody></table>";
+           
             msg += "<div class='details'>" + entry.details + "</div>";
 
             const marker = new mapboxgl.Marker(markerElement);
@@ -82,11 +112,14 @@ export default class ReactMap extends React.Component {
             marker.addTo(this.map);
 
             bounds.extend([entry.latlng.lng, entry.latlng.lat]);
+
+            this.markers.push(marker);
         });
 
         if (entries.length > 0) {
             this.map.fitBounds(bounds, {
                 maxZoom: 14,
+                padding: 30,
             });
         }        
     }

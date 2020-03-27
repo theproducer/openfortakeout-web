@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const form = document.querySelector("#inputloc_form");
             const zipcode = form.elements['zipcode'].value;
             
+            document.querySelector("header.main").classList.add("listing");
             document.querySelector(".page_home").style.display = "none";
             document.querySelector(".page_listing").style.display = "block";
             document.querySelector("footer.main").style.display = "block";
@@ -65,6 +66,7 @@ function geolocate() {
 
 function geolocate_success(position) {
     console.log(position);
+    document.querySelector("header.main").classList.add("listing");
     document.querySelector(".page_home").style.display = "none";
     document.querySelector(".page_listing").style.display = "block";
     document.querySelector("footer.main").style.display = "block";
