@@ -14,8 +14,6 @@ COPY postcss.config.js ./
 
 RUN yarn && yarn prod --prod
 
-COPY src/img/ ./dist/img/
-
 FROM nginx:latest
 COPY --from=builder /usr/src/app/dist /var/www
 COPY ./config/nginx.conf /etc/nginx/conf.d/default.conf

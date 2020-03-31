@@ -1,12 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import 'babel-polyfill';
+import Select from "react-select";
+import "babel-polyfill";
 
 import LoadingSpinner from "./loading";
 import BusinessEntry from "./entry";
 import ReactMap from "./map";
 
 const apiurl = process.env.API_URL;
+
+const business_types = [
+    { value: "Restaurant", label: "Restaurant" },
+    { value: "Groceries", label: "Groceries" },
+    { value: "Electronics", label: "Electronics" },
+    { value: "General Merchandise", label: "General Merchandise" }
+];
 
 class Listing extends React.Component {
     constructor(props) {
@@ -15,18 +23,40 @@ class Listing extends React.Component {
         this.allentries = [];
         this.searchTimeout = null;
 
-
         this.state = {
             loading: false,
             searchterm: "",
+            filterType: "",
             entries: [],
             error: null
         };
     }
 
+    onFilterTypeChange = (e, action) => {
+        if (action.action === "select-option" || action.action === "clear") {
+            let type = this.state.filterType;
+            type = e.value;
+
+            this.setState({
+                filterType: type,
+            });
+
+            if (this.searchTimeout !== null) {
+                clearTimeout(this.searchTimeout);
+            }
+
+            this.searchTimeout = setTimeout(() => {
+                this.searchTimeout = null;
+                this.setState({
+                    entries: this.filterEntries()
+                });
+            }, 100);
+        }
+    };
+
     getListing(coords, zipcode) {
         this.setState({
-            loading: true,
+            loading: true
         });
 
         let fetchURL = apiurl + "/restaurants/?";
@@ -42,31 +72,33 @@ class Listing extends React.Component {
             headers: {
                 "Content-Type": "application/json"
             }
-        }).then(async (res) => {
-            if (res.ok) {
-                this.allentries = await res.json();
+        })
+            .then(async res => {
+                if (res.ok) {
+                    this.allentries = await res.json();
 
-                const entries = this.filterEntries();
+                    const entries = this.filterEntries();
 
+                    this.setState({
+                        loading: false,
+                        entries
+                    });
+                } else {
+                    const err_result = await res.text();
+                    throw new Error(err_result);
+                }
+            })
+            .catch(err => {
                 this.setState({
                     loading: false,
-                    entries,
+                    error: err.message
                 });
-            } else {
-                const err_result = await res.text();
-                throw new Error(err_result);
-            }
-        }).catch((err) => {
-            this.setState({
-                loading: false,                
-                error: err.message
             });
-        });
     }
 
-    onSearchFieldChange = (e) => {
+    onSearchFieldChange = e => {
         this.setState({
-            searchterm: e.target.value,
+            searchterm: e.target.value
         });
 
         if (this.searchTimeout !== null) {
@@ -76,40 +108,70 @@ class Listing extends React.Component {
         this.searchTimeout = setTimeout(() => {
             this.searchTimeout = null;
             this.setState({
-                entries: this.filterEntries(),
+                entries: this.filterEntries()
             });
-        }, 800);
-    }
+        }, 600);
+    };
 
-    filterEntries = () => {        
+    filterEntries = () => {
         const searchterm = this.state.searchterm;
-        if (searchterm.length < 3) {
+        const filterByType = this.state.filterType;
+        if (searchterm.length < 3  && filterByType === "") {
             return this.allentries;
         }
 
-        const filtered = this.allentries.filter((entry) => {
-            return entry.name.toLowerCase().includes(searchterm.toLowerCase());
+        const filtered = this.allentries.filter(entry => {            
+            let includesName = false;
+
+            if (searchterm === "") {
+                includesName = true;
+            } else {
+                includesName = entry.name.toLowerCase().includes(searchterm.toLowerCase());
+            }
+
+            let includesType = false;
+            
+            if (filterByType === "") {
+                includesType = true;
+            } else {
+                includesType = entry.type === filterByType;
+            }
+            
+            return includesName && includesType;
         });
 
         return filtered;
-    }
+    };
 
-    onEntryHover = (entry) => {
+    onEntryHover = entry => {
         document.getElementById("marker-" + entry.id).classList.add("highlighted");
-    }
+    };
 
-    onEntryOut = (entry) => {
-        document.getElementById("marker-" + entry.id).classList.remove("highlighted");
-    }
+    onEntryOut = entry => {
+        document
+            .getElementById("marker-" + entry.id)
+            .classList.remove("highlighted");
+    };
 
     render() {
         return (
             <div>
                 <div className="filters">
+                    <div className="type-filter">
+                        <Select
+                            className="dropdown"
+                            classNamePrefix="react-select"
+                            placeholder="Filter by Type"
+                            isClearable={true}
+                            isSearchable={false}
+                            options={business_types}
+                            onChange={this.onFilterTypeChange}
+                        />
+                    </div>
                     <div className="search">
-                        <input 
-                            type="search" 
-                            placeholder="search..." 
+                        <input
+                            type="search"
+                            placeholder="search..."
                             value={this.state.searchterm}
                             onChange={this.onSearchFieldChange}
                         />
@@ -122,24 +184,24 @@ class Listing extends React.Component {
                 ) : null}
                 <div className="results">
                     <div className="listing">
-                        {this.state.entries.length === 0 ?
+                        {this.state.entries.length === 0 ? (
                             <div className="empty">No businesses found in this area.</div>
-                        : null }
-                        {this.state.entries.map((entry) => {
+                        ) : null}
+                        {this.state.entries.map(entry => {
                             return (
-                            <BusinessEntry
-                                key={entry.id} 
-                                entry={entry} 
-                                onHover={this.onEntryHover}   
-                                onOut={this.onEntryOut}                            
-                            />
+                                <BusinessEntry
+                                    key={entry.id}
+                                    entry={entry}
+                                    onHover={this.onEntryHover}
+                                    onOut={this.onEntryOut}
+                                />
                             );
                         })}
                     </div>
                     <div className="map">
                         <ReactMap entries={this.state.entries} />
                     </div>
-                </div>                
+                </div>
             </div>
         );
     }
@@ -148,8 +210,11 @@ class Listing extends React.Component {
 const mount_element = document.getElementById("react_listing");
 if (mount_element) {
     ReactDOM.render(
-        <Listing ref={(component) => { window.listingComponent = component }} />,
+        <Listing
+            ref={component => {
+                window.listingComponent = component;
+            }}
+        />,
         mount_element
     );
 }
-

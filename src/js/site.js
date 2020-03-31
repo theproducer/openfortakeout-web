@@ -1,3 +1,4 @@
+let page_footer = null;
 
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Document ready");
@@ -7,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const manual_btn = document.querySelector("#enable_zipcodeform");
     const backtotop_btn = document.querySelector(".back_to_top");
     const mobile_btn = document.querySelector("#mobilemenubtn");
+    page_footer = document.querySelector("footer.main");
 
     if (findloc_btn) {
         findloc_btn.addEventListener("click", function() {
@@ -54,6 +56,16 @@ window.onresize = function() {
     if (window.innerWidth >= 768 ) {
         document.querySelector("header.main nav").classList.remove("open");
     }
+}
+
+window.onscroll = function() {
+    if (page_footer !== null && !page_footer.classList.contains("fixed")) {
+        const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);        
+        if (window.scrollY > (viewportHeight / 2)) {
+            page_footer.classList.add("fixed");
+        }
+    }
+    
 }
 
 function geolocate() {

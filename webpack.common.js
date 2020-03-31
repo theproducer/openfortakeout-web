@@ -2,7 +2,9 @@ const webpack = require('webpack');
 const path = require('path');
 const htmlwebpackplugin = require('html-webpack-plugin');
 
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -12,7 +14,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: './[name].[hash].js'
+        filename: './js/[name].[contenthash].js'
     },
     resolve: {
         extensions: ['.jsx', '.js', '.json']
@@ -30,41 +32,34 @@ module.exports = {
                     }
                 }
             }, {
-                test: /\.(css|scss)$/,
-                use: [
-                    "style-loader",
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            publicPath: './',
-                            hmr: process.env.NODE_ENV === 'development'
-                        }
-                    },
-                    "css-loader",
-                    {
-                        loader: "sass-loader",
-                        options: {
-                            implementation: require('sass')
-                        }
-                    },
-                    "postcss-loader",
-                    "resolve-url-loader"
-                ]
-            },
-            {
+                test: /\.s[c|a]ss$/,
+                use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'resolve-url-loader', 'postcss-loader', 'sass-loader']
+            }, {
                 test: /\.(jpg|jpeg|png|gif|mp3|svg|otf)$/,
-                loaders: ['file-loader?limit=1024&name=./img/[name].[ext]']
-            },{
+                loaders: ['file-loader?limit=1024&name=/[folder]/[name].[ext]']
+            }, {
                 test: /\.(woff|woff2)$/,
-                loaders: ['file-loader?limit=1024&name=./fonts/[name].[ext]']
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "[name].[ext]",
+                            outputPath: "./fonts"
+                        }
+                    }
+                ]
             }
         ]
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
-            filename: './website.css',
-            chunkFileName: '[id].[hash].css'
+            filename: '[name].[contenthash].css',
+            chunkFileName: '[id].[contenthash].css'
         }),
+        new CopyPlugin([
+            { from: './src/img', to: './img' }
+        ]),
         new htmlwebpackplugin({
             title: 'Open for Takeout - Home',
             filename: "index.html",

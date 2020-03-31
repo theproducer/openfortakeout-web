@@ -11,7 +11,15 @@ export default function BusinessEntry(props) {
                 <h1>{props.entry.name}</h1>
                 <div className="distance"></div>
             </header>
-            <div className="business_type">{props.entry.type}</div>            
+            <div className="business_type">{props.entry.type}</div>  
+            {props.entry.tags !== null ? 
+            <div className="subtypes">
+                {props.entry.tags.map((tag, index) => {
+                    return (
+                        <span key={index}>{tag}</span>
+                    );
+                })}
+            </div> : null }
             <div className="address">
                 {props.entry.address + " " + props.entry.address_2}<br />
                 {props.entry.city + ", " + props.entry.state + " " + props.entry.zipcode}
