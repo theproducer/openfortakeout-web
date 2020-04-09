@@ -85,7 +85,7 @@ export default class ReactMap extends React.Component {
             
 
             const offersGiftcard = entry.giftcard ? "Yes" : "No";
-            const needsDonations = entry.donate_url !== "" ? "<a target='_blank' href='" + entry.donate_url + "'>Donate Here</a>" : "No";
+            const needsDonations = entry.donateurl !== "" ? "<a target='_blank' href='" + entry.donateurl + "'>Donate Here</a>" : "No";
 
             let msg = "<div class='entry'>";
             msg += "<header>";
@@ -93,7 +93,7 @@ export default class ReactMap extends React.Component {
             msg += "</header>";
             msg += "<div class='business_type'>" + entry.type + "</div>";
             msg += "<div class='address'>";
-            msg += entry.address + " " + entry.address_2 + "<br/>";
+            msg += entry.address + " " + entry.address2 + "<br/>";
             msg += entry.city + ", " + entry.state + " " + entry.zipcode;            
             msg += "</div>";
             msg += "<div class='hours'><strong>Hours: </strong>" + entry.hours + "</div>";
@@ -108,13 +108,13 @@ export default class ReactMap extends React.Component {
             msg += "</div>";
 
             const marker = new mapboxgl.Marker(markerElement);
-            marker.setLngLat([entry.latlng.lng, entry.latlng.lat]);
+            marker.setLngLat([entry.location.lng, entry.location.lat]);
             marker.setPopup(
                 new mapboxgl.Popup({ offset: 25, anchor: "left" }).setHTML(msg)
             );
             marker.addTo(this.map);
 
-            bounds.extend([entry.latlng.lng, entry.latlng.lat]);
+            bounds.extend([entry.location.lng, entry.location.lat]);
 
             this.markers.push(marker);
         });

@@ -53,6 +53,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-select": "^3.1.0",
+    "react-switch": "^5.0.1",
     "react-tagsinput": "^3.19.0",
     "validate.js": "^0.13.1",
     "waypoints": "^4.0.1"

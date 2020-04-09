@@ -7,6 +7,7 @@ export default function BusinessEntry(props) {
             onMouseOver={(e) => { props.onHover(props.entry); }}
             onMouseOut={(e) => { props.onOut(props.entry); }}            
             >
+            {props.entry.closed === true ? <div className='closed'>Closed</div> : null}
             <header>
                 <h1>{props.entry.name}</h1>
                 <div className="distance"></div>
@@ -21,7 +22,7 @@ export default function BusinessEntry(props) {
                 })}
             </div> : null }
             <div className="address">
-                {props.entry.address + " " + props.entry.address_2}<br />
+                {props.entry.address + " " + props.entry.address2}<br />
                 {props.entry.city + ", " + props.entry.state + " " + props.entry.zipcode}
             </div>
             <div className="hours"><strong>Hours: </strong>{props.entry.hours}</div>
@@ -33,7 +34,8 @@ export default function BusinessEntry(props) {
                     </div>
                     : null}                
             </div>
-            <div className="details">{props.entry.details}</div>            
+            <div className="details">{props.entry.details}</div>  
+            <a target="_blank" href={"/corrections.html?id=" + props.entry.id} className="corrections">Is this outdated?  Submit a update</a>          
         </article>
     );
 }
