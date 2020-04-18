@@ -7,7 +7,7 @@ import TagsInput from "react-tagsinput";
 import validate from "validate.js";
 import lodash from 'lodash';
 
-import { state_options, business_types } from "./misc";
+import { business_types } from "./misc";
 import LoadingSpinner from "./loading";
 
 const CorrectionsForm = {
@@ -31,7 +31,7 @@ const apiurl = process.env.API_URL;
 
 const formConstraints = {
   type: { presence: true },
-  phone: { presence: true, length: { maximum: 14 } },
+  phone: { presence: true, length: { maximum: 60 } },
   url: { url: true },
 };
 
@@ -161,6 +161,8 @@ class UpdateForm extends React.Component {
 
     const form = this.state.form;
     const valid = validate(form, formConstraints);
+
+    console.log(form);
 
     if (valid !== undefined) {
       let validationError = "";

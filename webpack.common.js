@@ -1,9 +1,12 @@
 const webpack = require("webpack");
 const path = require("path");
 const htmlwebpackplugin = require("html-webpack-plugin");
-
+const autoprefixer = require("autoprefixer");
+const postcssPresetEnv = require("postcss-preset-env");
+const postcssImport = require("postcss-import");
+const cssnano = require("cssnano");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const minicssExtract = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
@@ -11,6 +14,7 @@ module.exports = {
     website: ["./src/js/site.js", "./src/scss/web.scss"],
     listing: ["./src/react/listing.jsx"],
     form: ["./src/react/form.jsx", "./src/react/updateform.jsx"],
+    admin: ["./src/react/admin.jsx"],
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -36,10 +40,22 @@ module.exports = {
         test: /\.s[c|a]ss$/,
         use: [
           "style-loader",
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "resolve-url-loader",
-          "postcss-loader",
+          minicssExtract.loader,
+          { loader: "css-loader", options: { importLoaders: 1 } },
+          {
+            loader: "postcss-loader",
+            options: {
+              ident: "postcss",
+              plugins: () => [
+                postcssImport(),
+                postcssPresetEnv(),
+                autoprefixer(),
+                cssnano({
+                  preset: "default",
+                }),
+              ],
+            },
+          },
           "sass-loader",
         ],
       },
@@ -63,7 +79,7 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
+    new minicssExtract({
       filename: "[name].[contenthash].css",
       chunkFileName: "[id].[contenthash].css",
     }),
@@ -87,6 +103,11 @@ module.exports = {
       title: "Open for Takeout - About",
       filename: "about.html",
       template: "src/about.html",
+    }),
+    new htmlwebpackplugin({
+      title: "Open for Takeout - Admin",
+      filename: "admin.html",
+      template: "src/admin.html",
     }),
   ],
 };
